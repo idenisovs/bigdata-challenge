@@ -15,7 +15,7 @@ object Main extends App {
   val timer = new Timer
 
   val task = new TimerTask {
-    def run(): AnyVal = {
+    def run(): Unit = {
       println(device.read())
     }
   }
