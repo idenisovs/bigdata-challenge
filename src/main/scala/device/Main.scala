@@ -19,7 +19,11 @@ object Main extends App {
 
   val task = new TimerTask {
     def run(): Unit = {
-      client.send(device.read())
+      val record = device.read()
+
+      println(record)
+
+      client.send(record)
     }
   }
 

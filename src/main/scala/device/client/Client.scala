@@ -1,5 +1,7 @@
 package device.client
 
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.util.Properties
 
 import device.dto.Record
@@ -13,18 +15,26 @@ class Client {
   props.put("bootstrap.servers", "kafka:9092")
   props.put("acks", "all")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("value.serializer", "device.client.RecordSerializer")
 
-  val producer = new KafkaProducer[String, String](props)
+  val producer = new KafkaProducer[String, Record](props)
 
   def send(record: Record): Unit = {
-    val key = record.time.toString
-    val value = record.toString
+    val key = calculateChecksum(record.toString)
 
-    producer.send(new ProducerRecord[String, String](TARGET_TOPIC, key, value))
+    val producerRecord = new ProducerRecord[String, Record](TARGET_TOPIC, key, record)
+
+    producer.send(producerRecord)
   }
 
   def close(): Unit = {
     producer.close()
+  }
+
+  def calculateChecksum(json: String): String = {
+    val byteSequence = MessageDigest.getInstance("SHA-256").digest(json.getBytes("UTF-8"))
+    String.format("%032x", new BigInteger(1, byteSequence))
+
+
   }
 }
