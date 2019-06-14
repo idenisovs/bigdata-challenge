@@ -1,10 +1,10 @@
-package lv.edreams.bdc.device.client
+package lv.edreams.bdc.core.client
 
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Properties
 
-import lv.edreams.bdc.device.dto.Record
+import lv.edreams.bdc.core.dto.Record
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 class Client {

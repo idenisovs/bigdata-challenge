@@ -1,3 +1,5 @@
+import sbt.Keys.libraryDependencies
+
 ThisBuild / name := "Big Data Challenge"
 ThisBuild / organization := "lv.edreams.bdc"
 ThisBuild / version      := "0.1.0"
@@ -8,13 +10,16 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .disablePlugins(AssemblyPlugin)
+  .settings(
+    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9",
+    libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.2.1"
+  )
 
 lazy val deviceSimulator = (project in file("device-simulator"))
   .dependsOn(core)
   .settings(
+    name := "Device Simulator",
     assemblyJarName in assembly := s"device-sim-${version.value}.jar",
-    libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.2.1",
-    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9"
   )
 
 lazy val processJob = (project in file("process-job"))

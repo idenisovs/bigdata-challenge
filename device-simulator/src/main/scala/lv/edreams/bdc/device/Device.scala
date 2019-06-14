@@ -3,7 +3,7 @@ package lv.edreams.bdc.device
 import java.time.Instant
 import java.util.UUID
 
-import lv.edreams.bdc.device.dto.{Location, Record}
+import lv.edreams.bdc.core.dto.{Location, Record}
 
 class Device(val id: UUID, val location: Location) {
   private val startTime = Instant.now.getEpochSecond

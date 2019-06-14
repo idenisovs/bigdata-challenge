@@ -1,9 +1,9 @@
-package lv.edreams.bdc.device.client
+package lv.edreams.bdc.core.client
 
 import java.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import lv.edreams.bdc.device.dto.Record
+import lv.edreams.bdc.core.dto.Record
 import org.apache.kafka.common.serialization.Serializer
 
 class RecordSerializer extends Serializer[Record] {

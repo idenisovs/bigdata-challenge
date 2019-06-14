@@ -1,4 +1,4 @@
-package lv.edreams.bdc.device.dto
+package lv.edreams.bdc.core.dto
 
 import java.util.UUID
 
