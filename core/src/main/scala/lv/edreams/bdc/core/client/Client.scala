@@ -15,7 +15,7 @@ class Client {
   props.put("bootstrap.servers", "kafka:9092")
   props.put("acks", "all")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "device.client.RecordSerializer")
+  props.put("value.serializer", "lv.edreams.bdc.core.client.RecordSerializer")
 
   val producer = new KafkaProducer[String, Record](props)
 
@@ -34,7 +34,5 @@ class Client {
   def calculateChecksum(json: String): String = {
     val byteSequence = MessageDigest.getInstance("SHA-256").digest(json.getBytes("UTF-8"))
     String.format("%032x", new BigInteger(1, byteSequence))
-
-
   }
 }
