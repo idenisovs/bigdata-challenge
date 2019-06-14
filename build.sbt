@@ -1,12 +1,25 @@
-name := "device-simulator"
+ThisBuild / name := "Big Data Challenge"
+ThisBuild / organization := "lv.edreams.bdc"
+ThisBuild / version      := "0.1.0"
+ThisBuild / scalaVersion := "2.12.8"
 
-organization := "lv.edreams"
+lazy val root = (project in file("."))
+  .aggregate(core, deviceSimulator, processJob)
 
-version := "0.1"
+lazy val core = (project in file("core"))
+  .disablePlugins(AssemblyPlugin)
 
-scalaVersion := "2.13.0"
+lazy val deviceSimulator = (project in file("device-simulator"))
+  .dependsOn(core)
+  .settings(
+    assemblyJarName in assembly := s"device-sim-${version.value}.jar",
+    libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.2.1",
+    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9"
+  )
 
-assemblyJarName in assembly := "device-simulator-${version.value}.jar"
+lazy val processJob = (project in file("process-job"))
+  .dependsOn(core)
+  .settings(
+    assemblyJarName in assembly := s"process-job-${version.value}.jar"
+  )
 
-libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.2.1"
-libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9"

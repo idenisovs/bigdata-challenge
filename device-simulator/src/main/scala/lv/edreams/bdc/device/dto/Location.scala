@@ -1,4 +1,4 @@
-package device.dto
+package lv.edreams.bdc.device.dto
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility

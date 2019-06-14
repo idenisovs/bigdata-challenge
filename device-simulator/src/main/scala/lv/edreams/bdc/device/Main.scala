@@ -1,13 +1,13 @@
-package device
+package lv.edreams.bdc.device
 
 import java.io.{File, PrintWriter}
 import java.nio.file.{Files, Paths}
 import java.util.{Timer, TimerTask, UUID}
 
-import device.client.Client
+import lv.edreams.bdc.device.client.Client
+import lv.edreams.bdc.device.dto.Location
 
 import scala.io.Source
-import device.dto.Location
 
 object Main extends App {
   val UUID_FILE_NAME = "uuid.txt"
