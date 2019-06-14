@@ -11,8 +11,8 @@ import scala.io.Source
 
 object Main extends App {
   val UUID_FILE_NAME = "uuid.txt"
-
-  val device = new Device(id = readUUID(), location = getLocation(args(0)))
+  val locationString = if (args.length > 0) args(0) else "Riga"
+  val device = new Device(id = readUUID(), location = getLocation(locationString))
   val client = new Client
 
   val timer = new Timer
@@ -42,7 +42,11 @@ object Main extends App {
       writer.close()
     }
 
-    val uuid = Source.fromFile(UUID_FILE_NAME).mkString
+    val uuidFile = Source.fromFile(UUID_FILE_NAME)
+
+    val uuid = uuidFile.mkString
+
+    uuidFile.close()
 
     UUID.fromString(uuid)
   }
