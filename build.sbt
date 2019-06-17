@@ -25,6 +25,9 @@ lazy val deviceSimulator = (project in file("device-simulator"))
 lazy val processJob = (project in file("process-job"))
   .dependsOn(core)
   .settings(
-    assemblyJarName in assembly := s"process-job-${version.value}.jar"
+    name := "Process Job",
+    assemblyJarName in assembly := s"process-job-${version.value}.jar",
+    libraryDependencies += "org.apache.spark" % "spark-streaming_2.12" % "2.4.3" % "provided",
+    libraryDependencies += "org.apache.spark" % "spark-streaming-kafka-0-10-assembly_2.11" % "2.4.3"
   )
 
