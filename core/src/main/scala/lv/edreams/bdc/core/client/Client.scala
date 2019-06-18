@@ -8,21 +8,20 @@ import lv.edreams.bdc.core.dto.Record
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 class Client {
-  val TARGET_TOPIC = "records"
-
   val props = new Properties()
 
   props.put("bootstrap.servers", "kafka:9092")
   props.put("acks", "all")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "lv.edreams.bdc.core.client.RecordSerializer")
+  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+//  props.put("value.serializer", "lv.edreams.bdc.core.client.RecordSerializer")
 
-  val producer = new KafkaProducer[String, Record](props)
+  val producer = new KafkaProducer[String, String](props)
 
   def send(record: Record): Unit = {
-    val key = calculateChecksum(record.toString)
+    val recordStr = record.toString
 
-    val producerRecord = new ProducerRecord[String, Record](TARGET_TOPIC, key, record)
+    val producerRecord = new ProducerRecord[String, String](Client.TARGET_TOPIC, recordStr, recordStr)
 
     producer.send(producerRecord)
   }
@@ -35,4 +34,8 @@ class Client {
     val byteSequence = MessageDigest.getInstance("SHA-256").digest(json.getBytes("UTF-8"))
     String.format("%032x", new BigInteger(1, byteSequence))
   }
+}
+
+object Client {
+  val TARGET_TOPIC = "records"
 }
