@@ -38,12 +38,13 @@ root
 
 ### Project
 
-```           messages
-device sim 1 ---------> +-------+
-                        |       |      
-device sim 2 ---------> | Kafka |
-                        |       |
-device sim 3 ---------> +-------+
+```           
+              messages
+device sim 1 ----------> +-------+
+                         |       |      
+device sim 2 ----------> | Kafka |
+                         |       |
+device sim 3 ----------> +-------+
                             |
                             | messages
                             V
