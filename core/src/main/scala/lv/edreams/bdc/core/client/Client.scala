@@ -7,10 +7,10 @@ import java.util.Properties
 import lv.edreams.bdc.core.dto.Record
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
-class Client {
+class Client(val host: String = "kafka:9092") {
   val props = new Properties()
 
-  props.put("bootstrap.servers", "kafka:9092")
+  props.put("bootstrap.servers", host)
   props.put("acks", "all")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
   props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")

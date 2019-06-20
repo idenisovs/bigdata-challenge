@@ -11,9 +11,14 @@ import scala.io.Source
 
 object Main extends App {
   val UUID_FILE_NAME = "uuid.txt"
+  val KAFKA_HOST = sys.env.getOrElse("KAFKA_HOST", "kafka:9092")
+
+  println(s"Running against $KAFKA_HOST")
+
   val locationString = if (args.length > 0) args(0) else "Riga"
+
   val device = new Device(id = readUUID(), location = getLocation(locationString))
-  val client = new Client
+  val client = new Client(host = KAFKA_HOST)
 
   val timer = new Timer
 
