@@ -13,15 +13,12 @@ class Client(val host: String = "kafka:9092") {
   props.put("bootstrap.servers", host)
   props.put("acks", "all")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-//  props.put("value.serializer", "lv.edreams.bdc.core.client.RecordSerializer")
+  props.put("value.serializer", "lv.edreams.bdc.core.client.RecordSerializer")
 
-  val producer = new KafkaProducer[String, String](props)
+  val producer = new KafkaProducer[String, Record](props)
 
   def send(record: Record): Unit = {
-    val recordStr = record.toString
-
-    val producerRecord = new ProducerRecord[String, String](Client.TARGET_TOPIC, recordStr, recordStr)
+    val producerRecord = new ProducerRecord[String, Record](Client.TARGET_TOPIC, record.toString, record)
 
     producer.send(producerRecord)
   }
