@@ -20,6 +20,12 @@ docker build --tag device-sim .
 
 # Run 3 instances of Producer (device-sim):
 docker-compose up --scale device-sim=3
+
+# To run single instance of device-sim.jar on host PC:
+./run-producer.sh
+
+# To run single instance of consumer on host PC:
+./run-consumer.sh
 ```
 
 ## Structure

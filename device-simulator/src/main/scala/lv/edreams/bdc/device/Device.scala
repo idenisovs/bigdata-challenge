@@ -14,7 +14,7 @@ class Device(val id: UUID, val location: Location) {
     new Record(
       deviceId = id,
       location = location,
-      time = timestamp,
+      time = timestamp.toString,
       temperature = temperature(timestamp)
     )
   }

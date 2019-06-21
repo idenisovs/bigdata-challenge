@@ -14,7 +14,8 @@ lazy val core = (project in file("core"))
   .settings(
     libraryDependencies ++= Seq(
       "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9",
-      "org.apache.kafka" % "kafka-clients" % "2.2.1"
+      "org.apache.kafka" % "kafka-clients" % "2.2.1",
+      "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     ),
     excludeDependencies ++= Seq(
       ExclusionRule(organization = "org.apache.spark")
@@ -35,7 +36,8 @@ lazy val processJob = (project in file("process-job"))
     assemblyJarName in assembly := s"process-job-${version.value}.jar",
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-streaming" % "2.4.3" % "provided",
-      "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.3" % "provided"
+      "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.3" % "provided",
+      "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     )
   )
 

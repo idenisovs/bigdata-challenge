@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
-class Record(var deviceId: UUID, var time: Long, var location: Location, var temperature: Int) {
+class Record(var deviceId: UUID, var time: String, var location: Location, var temperature: Int) {
   def this() {
-    this(null, 0l, null, 0)
+    this(null, "0", null, 0)
   }
 
   override def toString: String = {
