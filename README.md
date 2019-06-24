@@ -9,24 +9,25 @@
 * Kafka - `2.2.1`
 * Docker - `18.09.5`
 
-## Commands
+## Running this project
 
-```bash
-# Build & Make fat jar: 
-sbt assembly
-
-# Build Producer (device-sim) docker image:
-docker build --tag device-sim .
-
-# Run 3 instances of Producer (device-sim):
-docker-compose up --scale device-sim=3
-
-# To run single instance of device-sim.jar on host PC:
-./run-producer.sh
-
-# To run single instance of consumer on host PC:
-./run-consumer.sh
-```
+1. [Install Apache Kafka](https://kafka.apache.org/quickstart) 
+    * I preffer to run it on separate VM;
+2. [Download and setup Apache Hadoop 3.2.0](http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html);
+3. [Download and setup the Apache Spark binaries](https://spark.apache.org/docs/latest/);
+4. Format HDFS partition:
+    * `./bin/hdfs namenode -format`
+5. Run DFS (Name and Data nodes of HDFS): 
+    * Assuming  you're in Hadoop HOME: `./bin/start-dfs.sh`;
+6. Get the project sources: `git clone https://github.com/idenisovs/bigdata-challenge.git`;
+7. Assembly the project sources: `sbt assembly`;
+8. Build the Docker image for producer: `docker build --tag device-sim .`
+    * See the`Dockerfiles` for details;
+9. Run N-th number of producers (assuming the Kafka is up and running):
+    * `docker-compose up --scale device-sim=3`
+    * You can run the single producer on host machine: `./run-producer.sh` 
+10. Run consumer: 
+    * `./run-cosumer.sh`
 
 ## Structure
 
