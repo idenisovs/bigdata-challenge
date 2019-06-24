@@ -28,6 +28,7 @@
     * You can run the single producer on host machine: `./run-producer.sh` 
 10. Run consumer: 
     * `./run-cosumer.sh`
+11. Observe the content of HDFS here: http://localhost:9870/explorer.html
 
 ## Structure
 
