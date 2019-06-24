@@ -64,3 +64,20 @@ device sim 3 ----------> +-------+
                     +---------------+
 ```
 
+## Code in action
+
+### Producer
+
+![Producers running within the Docker](./screenshots/producers.png "Producers running within the Docker")
+
+### Consumer
+
+![Running consumer](./screenshots/consumer.png "Producers running within the Docker")
+
+### Files in HDFS
+
+![Records within HDFS](./screenshots/hdfs-content.png "Records within HDFS")
+
+### The content of file in HDFS
+
+![The content of record within HDFS](./screenshots/records-in-hdfs.png "The content of record within HDFS")
