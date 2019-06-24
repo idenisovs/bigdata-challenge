@@ -12,11 +12,11 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import lv.edreams.bdc.core.client.RecordDeserializer
 import lv.edreams.bdc.core.dto.Record
-import org.apache.kafka.clients.consumer.ConsumerRecord
 
 object Main extends App {
   println("Hello, world!")
 
+  val HDFS_HOST = "hdfs://localhost:9000"
   val sparkConfig = new SparkConf().setMaster("local[2]").setAppName("Processing Job")
   val streamingContext = new StreamingContext(sparkConfig, Seconds(5))
 
@@ -38,18 +38,19 @@ object Main extends App {
   )
 
   // Output must be idempotent
-  stream.map(consumerRecord => process(consumerRecord.value())).print(10)
 
-  // Commit offsets to a special Kafka topic to ensure recovery from a failure
-  //    stream.foreachRDD { rdd =>
-  //      val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
-  //      stream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)
-  //    }
+  stream.foreachRDD(rdd => {
+    if (!rdd.isEmpty()) {
+      rdd.map(consumerRecord => {
+        process(consumerRecord.value())
+      }).saveAsTextFile(s"$HDFS_HOST/device-sim-record-${Instant.now().getEpochSecond}.json")
+    }
+  })
 
   streamingContext.start()
   streamingContext.awaitTermination()
 
-  def process(record: Record): Unit = {
+  def process(record: Record): Record = {
     val timestamp = record.time.toLong
 
     val date = Date.from(Instant.ofEpochSecond(timestamp))
@@ -57,5 +58,7 @@ object Main extends App {
     val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
 
     record.time = formatter.format(date)
+
+    record
   }
 }
