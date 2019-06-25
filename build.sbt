@@ -5,6 +5,12 @@ ThisBuild / organization := "lv.edreams.bdc"
 ThisBuild / version      := "0.1.0"
 ThisBuild / scalaVersion := "2.12.8"
 
+ThisBuild / resolvers ++= Seq(
+  "Apache Repository" at "https://repository.apache.org/content/repositories/releases/",
+  "Thrift" at "https://people.apache.org/~rawson/repo/"
+)
+
+
 lazy val root = (project in file("."))
   .aggregate(core, deviceSimulator, processJob)
   .disablePlugins(AssemblyPlugin)
@@ -37,6 +43,9 @@ lazy val processJob = (project in file("process-job"))
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-streaming" % "2.4.3" % "provided",
       "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.3" % "provided",
+      "org.apache.hbase" % "hbase" % "2.2.0",
+      "org.apache.hbase" % "hbase-common" % "2.2.0",
+      "org.apache.hbase" % "hbase-client" % "2.2.0",
       "org.scalatest" %% "scalatest" % "3.0.5" % "test"
     )
   )

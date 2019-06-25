@@ -5,7 +5,7 @@ import java.time.Instant
 import java.util.Date
 
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.kafka010._
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
@@ -13,12 +13,24 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import lv.edreams.bdc.core.client.RecordDeserializer
 import lv.edreams.bdc.core.dto.Record
 
+
+
 object Main extends App {
   println("Hello, world!")
 
   val HDFS_HOST = "hdfs://localhost:9000"
   val sparkConfig = new SparkConf().setMaster("local[2]").setAppName("Processing Job")
+
+  import org.apache.hadoop.hbase.HBaseConfiguration
+  import org.apache.hadoop.hbase.client.ConnectionFactory
+
+  val conf = HBaseConfiguration.create()
+  val connection = ConnectionFactory.createConnection(conf)
+  val admin = connection.getAdmin
+
   val streamingContext = new StreamingContext(sparkConfig, Seconds(5))
+
+  val sc = new SparkContext("local", "test")
 
   val kafkaParams = Map[String, Object](
     "bootstrap.servers" -> "kafka:9092",
@@ -43,7 +55,9 @@ object Main extends App {
     if (!rdd.isEmpty()) {
       rdd.map(consumerRecord => {
         process(consumerRecord.value())
-      }).saveAsTextFile(s"$HDFS_HOST/device-sim-record-${Instant.now().getEpochSecond}.json")
+      }).foreach(record => {
+        HBase.write(record)
+      })
     }
   })
 

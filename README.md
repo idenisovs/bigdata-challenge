@@ -8,6 +8,7 @@
 * Hadoop - `3.2.0`
 * Kafka - `2.2.1`
 * Docker - `18.09.5`
+* HBase - `2.2.0`
 
 ## Running this project
 
