@@ -19,8 +19,6 @@ object Main extends App {
   val sparkConfig = new SparkConf().setMaster("local[2]").setAppName("Processing Job")
   val streamingContext = new StreamingContext(sparkConfig, Seconds(5))
 
-  val sc = new SparkContext("local", "test")
-
   val kafkaParams = Map[String, Object](
     "bootstrap.servers" -> "kafka:9092",
     "key.deserializer" -> classOf[StringDeserializer],

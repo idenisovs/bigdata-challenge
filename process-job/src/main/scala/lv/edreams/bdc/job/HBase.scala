@@ -18,16 +18,12 @@ object HBase {
   private val resultsTable = TableName.valueOf(Bytes.toBytes("results"))
   private val table = connection.getTable(resultsTable)
 
-  def write(record: Record) = {
+  def write(record: Record): Unit = {
     val rowKey = getRowKey(record)
 
     val row = new Put(rowKey)
 
-    val cellBuilder = CellBuilderFactory.create(CellBuilderType.DEEP_COPY)
-
-    val cell = cellBuilder.setFamily(cfRecords).setQualifier(valueColumn).setValue(Bytes.toBytes(record.toString)).build()
-
-    row.add(cell)
+    row.addColumn(cfRecords, valueColumn, Bytes.toBytes(record.toString))
 
     table.put(row)
   }
