@@ -13,23 +13,25 @@
 ## Running this project
 
 1. [Install Apache Kafka](https://kafka.apache.org/quickstart) 
-    * I preffer to run it on separate VM;
-2. [Download and setup Apache Hadoop 3.2.0](http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html);
-3. [Download and setup the Apache Spark binaries](https://spark.apache.org/docs/latest/);
-4. Format HDFS partition:
+    * I prefer to run it on separate VM;
+2. [Install Apache HBase](https://hbase.apache.org/book.html#quickstart) 
+    * I prefer to run it on separate VM;
+3. [Download and setup Apache Hadoop 3.2.0](http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html);
+4. [Download and setup the Apache Spark binaries](https://spark.apache.org/docs/latest/);
+5. Format HDFS partition:
     * `./bin/hdfs namenode -format`
-5. Run DFS (Name and Data nodes of HDFS): 
+6. Run DFS (Name and Data nodes of HDFS): 
     * Assuming  you're in Hadoop HOME: `./bin/start-dfs.sh`;
-6. Get the project sources: `git clone https://github.com/idenisovs/bigdata-challenge.git`;
-7. Assembly the project sources: `sbt assembly`;
-8. Build the Docker image for producer: `docker build --tag device-sim .`
+7. Get the project sources: `git clone https://github.com/idenisovs/bigdata-challenge.git`;
+8. Assembly the project sources: `sbt assembly`;
+9. Build the Docker image for producer: `docker build --tag device-sim .`
     * See the`Dockerfiles` for details;
-9. Run N-th number of producers (assuming the Kafka is up and running):
+10. Run N-th number of producers (assuming the Kafka is up and running):
     * `docker-compose up --scale device-sim=3`
     * You can run the single producer on host machine: `./run-producer.sh` 
-10. Run consumer: 
+11. Run consumer: 
     * `./run-cosumer.sh`
-11. Observe the content of HDFS here: http://localhost:9870/explorer.html
+12. Observe the content of HDFS here: http://localhost:9870/explorer.html
 
 ## Structure
 
@@ -82,3 +84,7 @@ device sim 3 ----------> +-------+
 ### The content of file in HDFS
 
 ![The content of record within HDFS](./screenshots/records-in-hdfs.png "The content of record within HDFS")
+
+### The records in HBase
+
+![The records in HBase](./screenshots/hbase-records.png "The list of device records in HBase")
