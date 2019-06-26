@@ -13,21 +13,10 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import lv.edreams.bdc.core.client.RecordDeserializer
 import lv.edreams.bdc.core.dto.Record
 
-
-
 object Main extends App {
   println("Hello, world!")
 
-  val HDFS_HOST = "hdfs://localhost:9000"
   val sparkConfig = new SparkConf().setMaster("local[2]").setAppName("Processing Job")
-
-  import org.apache.hadoop.hbase.HBaseConfiguration
-  import org.apache.hadoop.hbase.client.ConnectionFactory
-
-  val conf = HBaseConfiguration.create()
-  val connection = ConnectionFactory.createConnection(conf)
-  val admin = connection.getAdmin
-
   val streamingContext = new StreamingContext(sparkConfig, Seconds(5))
 
   val sc = new SparkContext("local", "test")
@@ -63,6 +52,10 @@ object Main extends App {
 
   streamingContext.start()
   streamingContext.awaitTermination()
+
+  sys.addShutdownHook({
+    HBase.close()
+  })
 
   def process(record: Record): Record = {
     val timestamp = record.time.toLong

@@ -39,7 +39,22 @@ lazy val processJob = (project in file("process-job"))
   .dependsOn(core)
   .settings(
     name := "Process Job",
+
     assemblyJarName in assembly := s"process-job-${version.value}.jar",
+    assemblyMergeStrategy in assembly := {
+      case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
+      case PathList("javax", "activation", xs @ _*) => MergeStrategy.last
+      case PathList("org", "apache", xs @ _*) => MergeStrategy.last
+      case PathList("com", "google", xs @ _*) => MergeStrategy.first
+      case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
+      case "about.html" => MergeStrategy.rename
+      case "plugin.properties" => MergeStrategy.last
+      case "log4j.properties" => MergeStrategy.last
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    },
+
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-streaming" % "2.4.3" % "provided",
       "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.3" % "provided",

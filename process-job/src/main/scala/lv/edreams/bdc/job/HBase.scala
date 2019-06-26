@@ -6,18 +6,19 @@ import lv.edreams.bdc.core.dto.Record
 import org.apache.hadoop.hbase.util.Bytes
 
 object HBase {
-  final val resultsTable = "results"
+  final val HBASE_HOSTS="hbase"
   final val cfRecords = Bytes.toBytes("records")
   final val valueColumn = Bytes.toBytes("value")
 
   private val conf = HBaseConfiguration.create()
+
+  conf.set("hbase.zookeeper.quorum", HBASE_HOSTS)
+
   private val connection = ConnectionFactory.createConnection(conf)
+  private val resultsTable = TableName.valueOf(Bytes.toBytes("results"))
+  private val table = connection.getTable(resultsTable)
 
   def write(record: Record) = {
-    val resultsTable = TableName.valueOf(Bytes.toBytes("results"))
-
-    val table = connection.getTable(resultsTable)
-
     val rowKey = getRowKey(record)
 
     val row = new Put(rowKey)
@@ -29,10 +30,14 @@ object HBase {
     row.add(cell)
 
     table.put(row)
-
   }
 
-  def getRowKey(record: Record): Array[Byte] = {
-    Bytes.toBytes("hello-world")
+  def close(): Unit = {
+    table.close()
+    connection.close()
+  }
+
+  private def getRowKey(record: Record): Array[Byte] = {
+    Bytes.toBytes(s"device-${record.deviceId}-${record.time}")
   }
 }
